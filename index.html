@@ -1,0 +1,1753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>THE HER EDITION · Birthday Magazine</title>
+  <!-- Elegant Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* ----- RESET & GLOBAL (light, luxurious palette) ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #e5e0d8;
+      font-family: 'Inter', sans-serif;
+      color: #292522;
+      line-height: 1.5;
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ----- MAGAZINE WRAPPER ----- */
+    .magazine {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      max-width: 1400px;
+      max-height: 1000px;
+      background: #f2ede6;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #d6cfc4;
+    }
+
+    /* ----- PAGE CONTAINER (3D FLIP) ----- */
+    .pages-container {
+      flex: 1;
+      position: relative;
+      perspective: 2500px;
+      overflow: hidden;
+      background: #f2ede6;
+    }
+
+    .page {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 2rem 2.5rem;
+      background: #f2ede6;
+      color: #292522;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #b8a99a #e5e0d8;
+      transition: transform 0.9s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.5s ease;
+      transform-origin: left center;
+      backface-visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      border-left: 1px solid #d6cfc4;
+      box-shadow: inset 0 0 80px rgba(180, 170, 160, 0.15);
+    }
+
+    .page.active {
+      opacity: 1;
+      pointer-events: all;
+      transform: rotateY(0deg);
+      z-index: 10;
+    }
+
+    .page.flipped-out {
+      transform: rotateY(-15deg) scale(0.98);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .page::-webkit-scrollbar { width: 6px; }
+    .page::-webkit-scrollbar-track { background: #e5e0d8; }
+    .page::-webkit-scrollbar-thumb { background: #b8a99a; border-radius: 8px; }
+
+    /* ----- TYPOGRAPHY ----- */
+    h1, h2, h3, .mag-title {
+      font-family: 'Playfair Display', 'Cormorant Garamond', serif;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+
+    .mag-title {
+      font-size: 3.8rem;
+      font-weight: 600;
+      line-height: 1.1;
+      color: #292522;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .gold { color: #8a7a64; }
+    .gold-text { color: #8a7a64; font-weight: 500; }
+
+    .label-mono {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #8a7a64;
+    }
+
+    .page-number {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85rem;
+      color: #8a7a64;
+      letter-spacing: 0.1em;
+    }
+
+    /* ----- COVER (page 01) ----- */
+    .cover-page {
+      background: radial-gradient(circle at 30% 30%, #f7f3ed, #e8e2d9 90%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+      padding: 2.5rem 2rem;
+    }
+
+    .cover-top {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .cover-top .mag-title {
+      font-size: 2.4rem;
+      letter-spacing: 0.2em;
+      text-align: left;
+      line-height: 1.1;
+      color: #292522;
+    }
+
+    .cover-issue { text-align: right; }
+
+    .cover-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      position: relative;
+    }
+
+    .cover-portrait {
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: #d6cfc4;
+      margin-bottom: 1.5rem;
+      background-image: url('p4.jpg');
+      background-size: cover;
+      background-position: center;
+      border: 3px solid #b8a99a;
+      box-shadow: 0 0 40px rgba(160, 140, 120, 0.3);
+      animation: softGlow 4s infinite alternate;
+    }
+
+    @keyframes softGlow {
+      0% { box-shadow: 0 0 30px rgba(180, 160, 140, 0.2), 0 0 60px rgba(180, 160, 140, 0.1); }
+      100% { box-shadow: 0 0 50px rgba(180, 160, 140, 0.4), 0 0 90px rgba(180, 160, 140, 0.2); }
+    }
+
+    .cover-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.6rem;
+      font-weight: 600;
+      line-height: 1.2;
+      margin: 0.5rem 0;
+      color: #292522;
+    }
+
+    .cover-subhead {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #8a7a64;
+      margin-bottom: 1.5rem;
+    }
+
+    .cover-small-headlines {
+      display: flex;
+      gap: 1.8rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: #8a7a64;
+      letter-spacing: 0.05em;
+      margin: 0.8rem 0 1.2rem;
+    }
+
+    .cover-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      width: 100%;
+      margin-top: 1rem;
+    }
+
+    .barcode {
+      display: flex;
+      gap: 3px;
+      align-items: flex-end;
+      height: 40px;
+      opacity: 0.6;
+    }
+
+    .barcode span {
+      display: block;
+      width: 3px;
+      background: #8a7a64;
+      height: 100%;
+    }
+    .barcode span:nth-child(2) { height: 70%; }
+    .barcode span:nth-child(3) { height: 90%; }
+    .barcode span:nth-child(4) { height: 50%; }
+    .barcode span:nth-child(5) { height: 100%; }
+    .barcode span:nth-child(6) { height: 65%; }
+    .barcode span:nth-child(7) { height: 80%; }
+
+    .open-btn {
+      background: transparent;
+      border: 1.5px solid #8a7a64;
+      color: #8a7a64;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      padding: 0.9rem 2.2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      border-radius: 2px;
+    }
+
+    .open-btn:hover {
+      background: #8a7a64;
+      color: #f2ede6;
+      box-shadow: 0 0 30px rgba(160, 140, 120, 0.3);
+    }
+
+    /* ----- EDITOR'S LETTER (02) ----- */
+    .editorial-page { display: flex; flex-direction: column; }
+
+    .editorial-header {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #d6cfc4;
+      padding-bottom: 0.8rem;
+      margin-bottom: 2rem;
+    }
+
+    .editorial-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .editorial-content p {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+      color: #3d3833;
+    }
+
+    .editorial-content .quote {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-style: italic;
+      color: #8a7a64;
+      text-align: center;
+      margin: 2rem 0;
+      padding: 1rem 0;
+      border-top: 1px solid #d6cfc4;
+      border-bottom: 1px solid #d6cfc4;
+    }
+
+    .signature {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      font-style: italic;
+      text-align: right;
+      color: #8a7a64;
+      margin-top: 1.5rem;
+    }
+
+    /* ----- MAIN CHARACTER (03) ----- */
+    .character-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 1.5rem;
+      flex: 1;
+    }
+
+    .character-card {
+      background: #f7f3ed;
+      padding: 1.8rem;
+      border-left: 3px solid #b8a99a;
+      border-radius: 2px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.02);
+    }
+
+    .character-card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      color: #8a7a64;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .character-card p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: #4a443e;
+    }
+
+    .character-card ul {
+      list-style: none;
+      margin-top: 0.8rem;
+    }
+
+    .character-card li {
+      margin-bottom: 0.6rem;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      color: #4a443e;
+    }
+
+    .character-card li::before {
+      content: "◆";
+      color: #b8a99a;
+      margin-right: 0.6rem;
+      font-size: 0.7rem;
+    }
+
+    /* ----- GALLERY (04) — clickable + glow hover ----- */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      flex: 1;
+    }
+
+    .gallery-item {
+      background: #d6cfc4;
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.35s ease;
+      background-size: cover;
+      background-position: center;
+      min-height: 180px;
+      border: 1px solid #d6cfc4;
+      box-shadow: 0 0 0 rgba(184, 169, 154, 0);
+    }
+
+    .gallery-item:hover {
+      transform: scale(1.015);
+      border-color: #b8a99a;
+      box-shadow: 0 0 30px rgba(160, 140, 120, 0.4),
+                  0 0 60px rgba(184, 169, 154, 0.25),
+                  inset 0 0 20px rgba(184, 169, 154, 0.15);
+      filter: brightness(1.03);
+    }
+
+    .gallery-item .caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(242, 237, 230, 0.95));
+      padding: 1.2rem 0.8rem 0.6rem;
+      font-size: 0.7rem;
+      font-family: 'Space Mono', monospace;
+      color: #5a4f44;
+      letter-spacing: 0.1em;
+      pointer-events: none;
+    }
+
+    .gallery-item::after {
+      content: "⤢";
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 30px;
+      height: 30px;
+      background: rgba(242, 237, 230, 0.85);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      color: #8a7a64;
+      opacity: 0;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(4px);
+      border: 1px solid #d6cfc4;
+      pointer-events: none;
+    }
+
+    .gallery-item:hover::after {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+
+    .gallery-large {
+      grid-row: span 2;
+      min-height: 400px;
+    }
+
+    .gallery-small { min-height: 180px; }
+
+    /* ----- LIGHTBOX (fullscreen image viewer) ----- */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(18, 16, 14, 0.92);
+      backdrop-filter: blur(14px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      padding: 2rem;
+    }
+
+    .lightbox.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 85vh;
+      object-fit: contain;
+      border-radius: 6px;
+      box-shadow: 0 0 80px rgba(184, 169, 154, 0.35),
+                  0 0 200px rgba(184, 169, 154, 0.15);
+      border: 2px solid rgba(214, 207, 196, 0.4);
+      transform: scale(0.92);
+      transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .lightbox.open img {
+      transform: scale(1);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: rgba(242, 237, 230, 0.12);
+      border: 1.5px solid rgba(214, 207, 196, 0.5);
+      color: #f2ede6;
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(6px);
+      z-index: 10000;
+    }
+
+    .lightbox-close:hover {
+      background: rgba(184, 169, 154, 0.9);
+      color: #292522;
+      transform: rotate(90deg) scale(1.08);
+      border-color: #b8a99a;
+    }
+
+    .lightbox-caption {
+      position: absolute;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #e5e0d8;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      background: rgba(26, 24, 21, 0.7);
+      padding: 0.5rem 1.2rem;
+      border-radius: 40px;
+      border: 1px solid rgba(184, 169, 154, 0.3);
+      backdrop-filter: blur(8px);
+      white-space: nowrap;
+    }
+
+    /* ----- INTERVIEW (05) ----- */
+    .interview-list {
+      margin-top: 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .interview-item {
+      border-bottom: 1px solid #d6cfc4;
+      padding-bottom: 0.8rem;
+    }
+
+    .interview-question {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-style: italic;
+      color: #292522;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0;
+      transition: color 0.2s;
+    }
+
+    .interview-question:hover { color: #8a7a64; }
+
+    .interview-question i {
+      color: #b8a99a;
+      font-size: 0.8rem;
+      transition: transform 0.3s;
+    }
+
+    .interview-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease, padding 0.3s;
+      color: #4a443e;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      padding-left: 0.5rem;
+      border-left: 2px solid transparent;
+    }
+
+    .interview-answer.open {
+      max-height: 200px;
+      padding: 0.6rem 0 0.3rem 1.2rem;
+      border-left-color: #b8a99a;
+    }
+
+    .interview-item.active .interview-question i { transform: rotate(180deg); }
+
+    /* ----- AWARDS (06) ----- */
+    .awards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+      flex: 1;
+      align-content: center;
+    }
+
+    .award-card {
+      border: 2px solid #d6cfc4;
+      padding: 1.8rem 1rem;
+      text-align: center;
+      border-radius: 8px;
+      background: #f7f3ed;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.02);
+      transition: all 0.3s;
+    }
+
+    .award-card:hover {
+      box-shadow: 0 0 40px rgba(160, 140, 120, 0.2);
+      transform: translateY(-4px);
+      border-color: #b8a99a;
+    }
+
+    .award-icon { font-size: 2rem; color: #8a7a64; margin-bottom: 0.8rem; }
+
+    .award-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: #292522;
+      margin-bottom: 0.4rem;
+    }
+
+    .award-sub {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      color: #8a7a64;
+      letter-spacing: 0.1em;
+    }
+
+    /* ----- FUTURE ISSUE (07) ----- */
+    .future-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 1.5rem;
+      flex: 1;
+    }
+
+    .future-box {
+      background: #f7f3ed;
+      padding: 1.8rem;
+      border-radius: 4px;
+      border: 1px solid #e5e0d8;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.02);
+    }
+
+    .future-box h3 {
+      color: #8a7a64;
+      font-family: 'Playfair Display', serif;
+      margin-bottom: 1rem;
+      font-size: 1.3rem;
+    }
+
+    .future-box p, .future-box li {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: #4a443e;
+    }
+
+    .future-box ul { list-style: none; margin-top: 0.8rem; }
+    .future-box li { margin-bottom: 0.5rem; }
+
+    .future-box li::before {
+      content: "→";
+      color: #b8a99a;
+      margin-right: 0.5rem;
+    }
+
+    .open-year-btn {
+      margin-top: 1.5rem;
+      background: transparent;
+      border: 1px solid #8a7a64;
+      color: #8a7a64;
+      padding: 0.8rem 1.8rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      cursor: pointer;
+      transition: all 0.3s;
+      border-radius: 2px;
+      align-self: flex-start;
+    }
+
+    .open-year-btn:hover { background: #8a7a64; color: #f2ede6; }
+
+    .future-message {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #f7f3ed;
+      border-left: 3px solid #b8a99a;
+      font-style: italic;
+      color: #8a7a64;
+      display: none;
+      border-radius: 2px;
+    }
+
+    .future-message.show { display: block; }
+
+    /* ----- BIRTHDAY FINALE (08) ----- */
+    .finale-page {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .finale-photo {
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background-image: url('p5.jpg');
+      background-size: cover;
+      background-position: center;
+      border: 3px solid #b8a99a;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 0 50px rgba(160, 140, 120, 0.3);
+    }
+
+    .finale-message {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      color: #292522;
+      margin-bottom: 1rem;
+    }
+
+    .finale-message span { color: #8a7a64; }
+
+    .finale-sub {
+      font-size: 1rem;
+      letter-spacing: 0.2em;
+      color: #8a7a64;
+      margin-bottom: 2rem;
+    }
+
+    .replay-btn {
+      background: transparent;
+      border: 1.5px solid #8a7a64;
+      color: #8a7a64;
+      padding: 0.9rem 2.5rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .replay-btn:hover { background: #8a7a64; color: #f2ede6; }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: #b8a99a;
+      border-radius: 50%;
+      opacity: 0;
+      animation: floatParticle 7s infinite;
+      pointer-events: none;
+    }
+
+    @keyframes floatParticle {
+      0% { transform: translateY(0) scale(1); opacity: 0.6; }
+      100% { transform: translateY(-400px) scale(0); opacity: 0; }
+    }
+
+    /* ----- NAVIGATION BAR ----- */
+    .mag-nav {
+      background: #ede8e0;
+      border-top: 1px solid #d6cfc4;
+      padding: 0.6rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .page-indicators { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+
+    .page-dot {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: #8a7a64;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0.3rem 0.4rem;
+      transition: all 0.2s;
+      letter-spacing: 0.05em;
+    }
+
+    .page-dot:hover, .page-dot.active {
+      color: #5a4f44;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    .nav-arrows { display: flex; gap: 1rem; }
+
+    .nav-arrow {
+      background: transparent;
+      border: 1px solid #b8a99a;
+      color: #8a7a64;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 50%;
+      transition: all 0.3s;
+    }
+
+    .nav-arrow:hover { background: #b8a99a; color: #f2ede6; border-color: #b8a99a; }
+    .nav-arrow:disabled { opacity: 0.3; pointer-events: none; }
+
+    /* ----- MUSIC CONTROLS ----- */
+    .music-controls {
+      position: absolute;
+      bottom: 80px;
+      right: 20px;
+      background: rgba(237, 232, 224, 0.9);
+      backdrop-filter: blur(8px);
+      padding: 0.6rem 0.8rem;
+      border-radius: 40px;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      border: 1px solid #d6cfc4;
+      z-index: 100;
+      font-size: 0.8rem;
+    }
+
+    .music-controls button {
+      background: transparent;
+      border: none;
+      color: #8a7a64;
+      cursor: pointer;
+      font-size: 0.9rem;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: background 0.2s;
+    }
+
+    .music-controls button:hover { background: #e5e0d8; }
+
+    .volume-slider {
+      width: 60px;
+      height: 3px;
+      -webkit-appearance: none;
+      background: #d6cfc4;
+      border-radius: 2px;
+      outline: none;
+    }
+
+    .volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #b8a99a;
+      cursor: pointer;
+    }
+
+    /* ----- BOOKMARK / SECRET SEAL ----- */
+    .bookmark-seal {
+      position: absolute;
+      bottom: 80px;
+      left: 20px;
+      z-index: 100;
+      display: flex;
+      gap: 0.6rem;
+    }
+
+    .seal-btn {
+      background: #ede8e0;
+      border: 1px solid #d6cfc4;
+      color: #8a7a64;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 1rem;
+    }
+
+    .seal-btn:hover {
+      background: #b8a99a;
+      color: #f2ede6;
+      box-shadow: 0 0 20px rgba(160, 140, 120, 0.3);
+    }
+
+    /* ----- SECRET PAGE (glowing & floating) ----- */
+    .secret-page {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      width: 90%;
+      max-width: 500px;
+      background: #f7f3ed;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2.5rem 2rem;
+      border-radius: 16px;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+      border: 2px solid #d6cfc4;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.15), 0 0 0 10px rgba(255,255,255,0.4);
+      animation: floatGlow 4s infinite alternate;
+    }
+
+    .secret-page.open {
+      opacity: 1;
+      pointer-events: all;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    @keyframes floatGlow {
+      0% {
+        box-shadow: 0 30px 60px rgba(0,0,0,0.15), 0 0 0 10px rgba(255,255,255,0.4), 0 0 30px rgba(184, 169, 154, 0.3);
+        transform: translate(-50%, -50%) translateY(0px) scale(1);
+      }
+      100% {
+        box-shadow: 0 30px 60px rgba(0,0,0,0.15), 0 0 0 10px rgba(255,255,255,0.6), 0 0 50px rgba(184, 169, 154, 0.6);
+        transform: translate(-50%, -50%) translateY(-8px) scale(1);
+      }
+    }
+
+    .secret-page h2 {
+      font-size: 2rem;
+      color: #8a7a64;
+      margin-bottom: 1rem;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .secret-page p {
+      max-width: 420px;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: #4a443e;
+    }
+
+    .close-secret {
+      margin-top: 2rem;
+      background: transparent;
+      border: 1px solid #8a7a64;
+      color: #8a7a64;
+      padding: 0.7rem 1.8rem;
+      font-family: 'Space Mono', monospace;
+      cursor: pointer;
+      transition: all 0.3s;
+      border-radius: 2px;
+    }
+
+    .close-secret:hover { background: #8a7a64; color: #f2ede6; }
+
+    /* ----- DRAGGABLE HOME BUTTON (glowing, floating, modern hover) ----- */
+    .home-btn-wrap {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 500;
+      cursor: grab;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+      transition: none;
+    }
+
+    .home-btn-wrap.dragging {
+      cursor: grabbing;
+    }
+
+    .home-btn-wrap:active {
+      cursor: grabbing;
+    }
+
+    .home-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      background: rgba(242, 237, 230, 0.92);
+      backdrop-filter: blur(12px);
+      border: 1.5px solid #b8a99a;
+      border-radius: 50px;
+      color: #5a4f44;
+      text-decoration: none;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      box-shadow: 0 0 20px rgba(184, 169, 154, 0.4),
+                  0 0 45px rgba(184, 169, 154, 0.15),
+                  0 4px 14px rgba(0,0,0,0.08);
+      transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+      position: relative;
+      overflow: hidden;
+      animation: floatHomeBtn 3.5s ease-in-out infinite;
+    }
+
+    .home-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.7), transparent);
+      transform: translateX(-120%);
+      transition: transform 0.7s ease;
+      pointer-events: none;
+    }
+
+    .home-btn:hover {
+      background: #b8a99a;
+      color: #f2ede6;
+      border-color: #a89988;
+      box-shadow: 0 0 30px rgba(184, 169, 154, 0.8),
+                  0 0 70px rgba(184, 169, 154, 0.4),
+                  0 6px 20px rgba(0,0,0,0.12);
+      transform: translateY(-4px) scale(1.04);
+    }
+
+    .home-btn:hover::before {
+      transform: translateX(120%);
+    }
+
+    .home-btn i {
+      font-size: 0.9rem;
+    }
+
+    @keyframes floatHomeBtn {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-7px); }
+    }
+
+    /* When dragging, disable float animation and hover effects */
+    .home-btn-wrap.dragging .home-btn {
+      animation: none;
+      transform: none;
+      transition: none;
+    }
+
+    .home-btn-wrap.dragging .home-btn:hover {
+      transform: none;
+      background: rgba(242, 237, 230, 0.92);
+      color: #5a4f44;
+      border-color: #b8a99a;
+      box-shadow: 0 0 20px rgba(184, 169, 154, 0.4),
+                  0 0 45px rgba(184, 169, 154, 0.15),
+                  0 4px 14px rgba(0,0,0,0.08);
+    }
+
+    .home-btn-wrap.dragging .home-btn::before {
+      transform: translateX(-120%);
+    }
+
+    /* Adjust position on mobile */
+    @media (max-width: 768px) {
+      .home-btn-wrap {
+        bottom: 80px;
+        right: 12px;
+      }
+
+      .home-btn {
+        padding: 10px 15px;
+        font-size: 0.6rem;
+        gap: 6px;
+      }
+
+      .home-btn i {
+        font-size: 0.8rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .home-btn-wrap {
+        bottom: 76px;
+        right: 8px;
+      }
+
+      .home-btn {
+        padding: 8px 12px;
+        font-size: 0.55rem;
+        gap: 5px;
+      }
+    }
+
+    /* ----- MOBILE RESPONSIVE ----- */
+    @media (max-width: 768px) {
+      .magazine { max-height: 100vh; height: 100vh; border: none; }
+      .page { padding: 1.2rem 1rem; }
+      .mag-title { font-size: 2rem; }
+      .cover-top .mag-title { font-size: 1.6rem; }
+      .cover-headline { font-size: 1.8rem; }
+      .cover-portrait { width: 160px; height: 160px; }
+      .cover-subhead { font-size: 0.75rem; letter-spacing: 0.2em; }
+      .cover-small-headlines { gap: 0.8rem; font-size: 0.55rem; flex-wrap: wrap; justify-content: center; }
+      .character-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+      .gallery-grid { grid-template-columns: 1fr; }
+      .gallery-large { grid-row: span 1; min-height: 220px; }
+      .future-content { grid-template-columns: 1fr; gap: 1.2rem; }
+      .editorial-content .quote { font-size: 1.3rem; padding: 0.8rem 0; margin: 1rem 0; }
+      .signature { font-size: 1.6rem; }
+      .finale-message { font-size: 1.6rem; }
+      .finale-photo { width: 160px; height: 160px; }
+      .music-controls { bottom: 110px; right: 10px; padding: 0.4rem 0.6rem; }
+      .volume-slider { width: 40px; }
+      .bookmark-seal { bottom: 110px; left: 10px; }
+      .seal-btn { width: 36px; height: 36px; font-size: 0.9rem; }
+      .mag-nav { padding: 0.5rem 0.8rem; }
+      .page-dot { font-size: 0.6rem; padding: 0.2rem 0.3rem; }
+      .nav-arrow { width: 32px; height: 32px; font-size: 0.8rem; }
+      .awards-grid { grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+      .award-card { padding: 1.2rem 0.6rem; }
+      .award-title { font-size: 1rem; }
+      .secret-page { padding: 1.8rem 1.2rem; width: 92%; }
+      .secret-page h2 { font-size: 1.6rem; }
+      .secret-page p { font-size: 0.95rem; }
+      .lightbox { padding: 1rem; }
+      .lightbox-close { top: 14px; right: 14px; width: 40px; height: 40px; font-size: 1.1rem; }
+      .lightbox-caption { font-size: 0.6rem; bottom: 18px; padding: 0.4rem 1rem; }
+    }
+
+    @media (max-width: 480px) {
+      .cover-headline { font-size: 1.4rem; }
+      .cover-portrait { width: 130px; height: 130px; }
+      .mag-title { font-size: 1.6rem; }
+      .cover-top .mag-title { font-size: 1.2rem; }
+      .awards-grid { grid-template-columns: 1fr; }
+      .page-dot { font-size: 0.55rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="magazine">
+    <!-- PAGES CONTAINER -->
+    <div class="pages-container" id="pagesContainer">
+      <!-- PAGE 01 - COVER -->
+      <section class="page cover-page active" data-page="1">
+        <div class="cover-top">
+          <div class="mag-title">THE<br>YABU<br>EDITION</div>
+          <div class="cover-issue">
+            <div class="label-mono">BIRTHDAY SPECIAL</div>
+            <div class="label-mono" style="margin-top:0.3rem;">VOL. 01</div>
+            <div class="label-mono" style="margin-top:0.3rem; font-size:0.6rem;">JUNE 2025</div>
+          </div>
+        </div>
+        <div class="cover-main">
+          <div class="cover-portrait"></div>
+          <div class="cover-headline">THE GIRL WHO MAKES<br>ORDINARY DAYS SPECIAL</div>
+          <div class="cover-subhead">EXCLUSIVE: HER STORY, HER STYLE, HER WORLD</div>
+          <div class="cover-small-headlines">
+            <span>HER STYLE</span>
+            <span>·</span>
+            <span>HER WORLD</span>
+            <span>·</span>
+            <span>THE VIEW</span>
+          </div>
+          <button class="open-btn" id="openMagazineBtn">OPEN YOUR EDITION →</button>
+        </div>
+        <div class="cover-bottom">
+          <div class="barcode">
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+          </div>
+          <div class="label-mono">US $12.99 · CA $16.99</div>
+          <div class="page-number">01</div>
+        </div>
+      </section>
+
+      <!-- PAGE 02 - EDITOR'S LETTER -->
+      <section class="page editorial-page" data-page="2">
+        <div class="editorial-header">
+          <div class="label-mono">02 / EDITOR'S LETTER</div>
+          <div class="label-mono">THE HER EDITION</div>
+        </div>
+        <div class="editorial-content">
+          <p>Dear mini,</p>
+          <p>There are people who walk into a room and change the temperature. You are one of them. This magazine is a small attempt to capture what makes you, you — the laughter, the chaos, the quiet moments, the dreams.</p>
+          <div class="quote">“u r the kind of person who makes ordinary days feel like special occasions.”</div>
+          <p>Every page here is a reflection of your light. all of it is a celebration of the main character: you.</p>
+          <p>Happy birthday. May this year be as extraordinary as you are.</p>
+          <div class="signature">🫰💫<br>Your DAY</div>
+          <div class="label-mono">FEBURARY 6,2026</div>
+        </div>
+        <div style="display:flex; justify-content:flex-end; margin-top:1rem;">
+          <span class="page-number">02</span>
+        </div>
+      </section>
+
+      <!-- PAGE 03 - THE MAIN CHARACTER -->
+      <section class="page character-page" data-page="3">
+        <div style="display:flex; justify-content:space-between; border-bottom:1px solid #d6cfc4; padding-bottom:0.8rem;">
+          <div class="label-mono">03 / THE MAIN CHARACTER</div>
+          <div class="label-mono">PROFILE</div>
+        </div>
+        <div class="character-grid">
+          <div class="character-card">
+            <h3>Personality</h3>
+            <p>Spontaneous, warm, and fiercely loyal. She's the friend who remembers the little things and turns them into big gestures. Her energy is contagious — part sunshine, part chaos, all heart.</p>
+            <ul style="margin-top:1rem;">
+              <li>Queen of random 2am conversations</li>
+              <li>Believes in making memories, not excuses</li>
+              <li>Can find humor in absolutely anything</li>
+            </ul>
+          </div>
+          <div class="character-card">
+            <h3>Favorite Things</h3>
+            <ul>
+              <li>Long drives with no destination</li>
+              <li>Fresh flowers on a Tuesday</li>
+              <li>Old bookstores & new adventures</li>
+              <li>Inside jokes only she understands</li>
+              <li>Golden hour & good playlists</li>
+            </ul>
+            <p style="margin-top:1.2rem; font-style:italic; color:#8a7a64;">"The person behind the pictures."</p>
+          </div>
+        </div>
+        <div style="display:flex; justify-content:flex-end; margin-top:1rem;">
+          <span class="page-number">03</span>
+        </div>
+      </section>
+
+      <!-- PAGE 04 - HER GALLERY (clickable + glow hover + lightbox) -->
+      <section class="page" data-page="4">
+        <div style="display:flex; justify-content:space-between; border-bottom:1px solid #d6cfc4; padding-bottom:0.8rem; margin-bottom:1rem;">
+          <div class="label-mono">04 / HER GALLERY</div>
+          <div class="label-mono">EDITORIAL</div>
+        </div>
+        <div class="gallery-grid">
+          <div class="gallery-item gallery-large" 
+               style="background-image: url('p1.jpg');" 
+               data-img="p1.jpg" 
+               data-caption="CANDID · SUMMER 2024">
+            <div class="caption">THE BUTTERFLY· GIRL</div>
+          </div>
+          <div class="gallery-item gallery-small" 
+               style="background-image: url('p2.jpg');" 
+               data-img="p2.jpg" 
+               data-caption="GOLDEN HOUR">
+            <div class="caption">THIS FILE👌</div>
+          </div>
+          <div class="gallery-item gallery-small" 
+               style="background-image: url('p3.jpg');" 
+               data-img="p3.jpg" 
+               data-caption="THE SMILE">
+            <div class="caption">THE SAME</div>
+          </div>
+        </div>
+        <div style="display:flex; justify-content:flex-end; margin-top:1rem;">
+          <span class="page-number">04</span>
+        </div>
+      </section>
+
+      <!-- PAGE 05 - THE INTERVIEW -->
+      <section class="page interview-page" data-page="5">
+        <div style="display:flex; justify-content:space-between; border-bottom:1px solid #d6cfc4; padding-bottom:0.8rem;">
+          <div class="label-mono">05 / THE INTERVIEW</div>
+          <div class="label-mono">Q&A</div>
+        </div>
+        <div class="interview-list">
+          <div class="interview-item">
+            <div class="interview-question">If your life were a movie, what would its title be? <i class="fas fa-chevron-down"></i></div>
+            <div class="interview-answer">"The Favorite Yapper"</div>
+          </div>
+          <div class="interview-item">
+            <div class="interview-question">What's one thing you could never get tired of? <i class="fas fa-chevron-down"></i></div>
+            <div class="interview-answer">"Obviously cats 🙀"</div>
+          </div>
+          <div class="interview-item">
+            <div class="interview-question">What is your most unexpected talent? <i class="fas fa-chevron-down"></i></div>
+            <div class="interview-answer">"Maybe irritating ur friends"</div>
+          </div>
+          <div class="interview-item">
+            <div class="interview-question">What would you tell your future self? <i class="fas fa-chevron-down"></i></div>
+            <div class="interview-answer">Keep being unapologetically you. The world needs your kind of magic.</div>
+          </div>
+        </div>
+        <div style="display:flex; justify-content:flex-end; margin-top:1rem;">
+          <span class="page-number">05</span>
+        </div>
+      </section>
+
+      <!-- PAGE 06 - HER AWARDS -->
+      <section class="page" data-page="6">
+        <div style="display:flex; justify-content:space-between; border-bottom:1px solid #d6cfc4; padding-bottom:0.8rem;">
+          <div class="label-mono">06 / HER AWARDS</div>
+          <div class="label-mono">THE GOLDEN HONORS</div>
+        </div>
+        <div class="awards-grid">
+          <div class="award-card">
+            <div class="award-icon">👑</div>
+            <div class="award-title">Queen of Random Moments</div>
+            <div class="award-sub">FOR SPONTANEOUS BRILLIANCE</div>
+          </div>
+          <div class="award-card">
+            <div class="award-icon">✨</div>
+            <div class="award-title">Best Smile Award</div>
+            <div class="award-sub">LIGHTING UP EVERY ROOM</div>
+          </div>
+          <div class="award-card">
+            <div class="award-icon">🧠</div>
+            <div class="award-title">Professional Overthinker</div>
+            <div class="award-sub">FOR THINKING 10 STEPS AHEAD</div>
+          </div>
+          <div class="award-card">
+            <div class="award-icon">🌟</div>
+            <div class="award-title">Main Character Energy</div>
+            <div class="award-sub">ALWAYS IN THE SPOTLIGHT</div>
+          </div>
+          <div class="award-card">
+            <div class="award-icon">💖</div>
+            <div class="award-title">Most Unforgettable Personality</div>
+            <div class="award-sub">IMPOSSIBLE TO FORGET</div>
+          </div>
+        </div>
+        <div style="display:flex; justify-content:flex-end; margin-top:1rem;">
+          <span class="page-number">06</span>
+        </div>
+      </section>
+
+      <!-- PAGE 07 - THE FUTURE ISSUE -->
+      <section class="page future-page" data-page="7">
+        <div style="display:flex; justify-content:space-between; border-bottom:1px solid #d6cfc4; padding-bottom:0.8rem;">
+          <div class="label-mono">07 / THE FUTURE ISSUE</div>
+          <div class="label-mono">DREAMS & PLACES</div>
+        </div>
+        <div class="future-content">
+          <div class="future-box">
+            <h3>Dreams & Places</h3>
+            <ul>
+              <li>See the Northern Lights in Iceland</li>
+              <li>Write a book (even a tiny one)</li>
+              <li>Live by the ocean for a summer</li>
+              <li>Learn to cook one signature dish</li>
+              <li>Visit Brazil, Canada, Turkey</li>
+            </ul>
+          </div>
+          <div class="future-box">
+            <h3>A Message to Future You</h3>
+            <p>Remember this year. Remember the people who celebrated you. And never forget that you are worthy of every beautiful thing that comes your way.</p>
+          </div>
+        </div>
+        <button class="open-year-btn" id="openYearBtn"> IN ONE YEAR</button>
+        <div class="future-message" id="futureMessage">🌟 One year from now, may god add for us ages to see You've grown, you've glowed, and you've made it. Keep going. and celebrate your next birthday in a wealth🤞🤞✨.</div>
+        <div style="display:flex; justify-content:flex-end; margin-top:1rem;">
+          <span class="page-number">07</span>
+        </div>
+      </section>
+
+      <!-- PAGE 08 - BIRTHDAY FINALE -->
+      <section class="page finale-page" data-page="8">
+        <div id="particlesContainer" style="position:absolute; inset:0; overflow:hidden; pointer-events:none;"></div>
+        <div class="finale-photo"></div>
+        <div class="finale-message">HAPPY BIRTHDAY, <span>MAIN CHARACTER</span></div>
+        <div class="finale-sub">YOU MAKE THE WORLD MORE INTERESTING</div>
+        <button class="replay-btn" id="replayBtn">READ AGAIN FROM THE BEGINNING</button>
+        <div style="display:flex; justify-content:flex-end; width:100%; margin-top:2rem;">
+          <span class="page-number">08</span>
+        </div>
+      </section>
+    </div>
+
+    <!-- SECRET PAGE (glowing & floating) -->
+    <div class="secret-page" id="secretPage">
+      <h2>ANOTHER ONE</h2>
+      <p>thank you for hearing non sense thought and you are the reason ordinary days feel like celebration. never forget your magic. HBD</p>
+      <button class="close-secret" id="closeSecretBtn">CLOSE</button>
+    </div>
+
+    <!-- LIGHTBOX (fullscreen image viewer) -->
+    <div class="lightbox" id="lightbox">
+      <button class="lightbox-close" id="lightboxClose" aria-label="Close">
+        <i class="fas fa-times"></i>
+      </button>
+      <img src="" alt="Full size" id="lightboxImg">
+      <div class="lightbox-caption" id="lightboxCaption"></div>
+    </div>
+
+    <!-- MUSIC CONTROLS -->
+    <div class="music-controls">
+      <button id="playPauseBtn"><i class="fas fa-play"></i></button>
+      <input type="range" min="0" max="100" value="40" class="volume-slider" id="volumeSlider">
+      <span style="color:#8a7a64; font-size:0.65rem; font-family:'Space Mono';">♪</span>
+    </div>
+
+    <!-- BOOKMARK & SECRET SEAL -->
+    <div class="bookmark-seal">
+      <button class="seal-btn" id="bookmarkBtn" title="Bookmark this page"><i class="fas fa-bookmark"></i></button>
+      <button class="seal-btn" id="secretSealBtn" title="Secret page"><i class="fas fa-gem"></i></button>
+    </div>
+
+    <!-- DRAGGABLE BACK TO HOME BUTTON (glowing, floating, modern hover) -->
+    <div class="home-btn-wrap" id="homeBtnWrap">
+      <a href="https://frazi-f.github.io/yabbb/" class="home-btn" id="homeBtn" aria-label="Back to Home">
+        <i class="fas fa-arrow-left"></i>
+        <span>BACK TO HOME</span>
+      </a>
+    </div>
+
+    <!-- BOTTOM NAVIGATION -->
+    <nav class="mag-nav">
+      <div class="page-indicators" id="pageIndicators">
+        <button class="page-dot active" data-page="1">01</button>
+        <button class="page-dot" data-page="2">02</button>
+        <button class="page-dot" data-page="3">03</button>
+        <button class="page-dot" data-page="4">04</button>
+        <button class="page-dot" data-page="5">05</button>
+        <button class="page-dot" data-page="6">06</button>
+        <button class="page-dot" data-page="7">07</button>
+        <button class="page-dot" data-page="8">08</button>
+      </div>
+      <div class="nav-arrows">
+        <button class="nav-arrow" id="prevPageBtn" disabled><i class="fas fa-chevron-left"></i></button>
+        <button class="nav-arrow" id="nextPageBtn"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </nav>
+  </div>
+
+  <!-- BACKGROUND MUSIC -->
+  <audio id="bgMusic" loop>
+    <source src="m.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    (function() {
+      // ---- STATE ----
+      let currentPage = 1;
+      const totalPages = 8;
+      const pages = document.querySelectorAll('.page');
+      const pageDots = document.querySelectorAll('.page-dot');
+      const prevBtn = document.getElementById('prevPageBtn');
+      const nextBtn = document.getElementById('nextPageBtn');
+      const openMagazineBtn = document.getElementById('openMagazineBtn');
+      const replayBtn = document.getElementById('replayBtn');
+      const openYearBtn = document.getElementById('openYearBtn');
+      const futureMessage = document.getElementById('futureMessage');
+      const secretSealBtn = document.getElementById('secretSealBtn');
+      const secretPage = document.getElementById('secretPage');
+      const closeSecretBtn = document.getElementById('closeSecretBtn');
+      const bookmarkBtn = document.getElementById('bookmarkBtn');
+      const bgMusic = document.getElementById('bgMusic');
+      const playPauseBtn = document.getElementById('playPauseBtn');
+      const volumeSlider = document.getElementById('volumeSlider');
+
+      // Lightbox elements
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightboxImg');
+      const lightboxCaption = document.getElementById('lightboxCaption');
+      const lightboxClose = document.getElementById('lightboxClose');
+
+      // Draggable home button elements
+      const homeBtnWrap = document.getElementById('homeBtnWrap');
+      const homeBtn = document.getElementById('homeBtn');
+
+      // ---- LIGHTBOX FUNCTIONS ----
+      function openLightbox(imgSrc, caption) {
+        lightboxImg.src = imgSrc;
+        lightboxCaption.textContent = caption || '';
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+        setTimeout(() => {
+          if (!lightbox.classList.contains('open')) {
+            lightboxImg.src = '';
+          }
+        }, 400);
+      }
+
+      // Gallery item click
+      document.querySelectorAll('.gallery-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const imgSrc = item.dataset.img;
+          const caption = item.dataset.caption;
+          if (imgSrc) {
+            openLightbox(imgSrc, caption);
+          }
+        });
+      });
+
+      // Close lightbox
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && lightbox.classList.contains('open')) {
+          closeLightbox();
+        }
+      });
+
+      // ---- DRAGGABLE HOME BUTTON ----
+      let isDragging = false;
+      let hasMoved = false;
+      let startX, startY;
+      let initialLeft, initialTop;
+      let homeBtnLeft = null;
+      let homeBtnTop = null;
+
+      // Initialize position (bottom-right default)
+      function setInitialHomeBtnPosition() {
+        const rect = homeBtnWrap.getBoundingClientRect();
+        // Store current position as CSS left/top so we can drag
+        homeBtnLeft = rect.left;
+        homeBtnTop = rect.top;
+        homeBtnWrap.style.left = homeBtnLeft + 'px';
+        homeBtnWrap.style.top = homeBtnTop + 'px';
+        homeBtnWrap.style.bottom = 'auto';
+        homeBtnWrap.style.right = 'auto';
+      }
+
+      // Set initial position after DOM is ready
+      setTimeout(setInitialHomeBtnPosition, 100);
+
+      // Pointer down on the wrapper (not the link itself to allow dragging)
+      homeBtnWrap.addEventListener('pointerdown', (e) => {
+        // Don't prevent default on the link if user just clicks
+        if (e.target.closest('.home-btn') && !hasMoved) {
+          // Allow click but prepare for drag
+        }
+        e.preventDefault();
+        isDragging = true;
+        hasMoved = false;
+        homeBtnWrap.classList.add('dragging');
+
+        startX = e.clientX;
+        startY = e.clientY;
+
+        const rect = homeBtnWrap.getBoundingClientRect();
+        initialLeft = rect.left;
+        initialTop = rect.top;
+
+        // Capture pointer
+        homeBtnWrap.setPointerCapture(e.pointerId);
+      });
+
+      // Pointer move
+      homeBtnWrap.addEventListener('pointermove', (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+
+        if (Math.abs(dx) > 4 || Math.abs(dy) > 4) {
+          hasMoved = true;
+        }
+
+        let newLeft = initialLeft + dx;
+        let newTop = initialTop + dy;
+
+        // Keep within viewport bounds (with small margin)
+        const margin = 8;
+        const maxLeft = window.innerWidth - homeBtnWrap.offsetWidth - margin;
+        const maxTop = window.innerHeight - homeBtnWrap.offsetHeight - margin;
+
+        newLeft = Math.max(margin, Math.min(newLeft, maxLeft));
+        newTop = Math.max(margin, Math.min(newTop, maxTop));
+
+        homeBtnWrap.style.left = newLeft + 'px';
+        homeBtnWrap.style.top = newTop + 'px';
+      });
+
+      // Pointer up
+      homeBtnWrap.addEventListener('pointerup', (e) => {
+        if (!isDragging) return;
+        isDragging = false;
+        homeBtnWrap.classList.remove('dragging');
+        homeBtnWrap.releasePointerCapture(e.pointerId);
+
+        // Store new position
+        if (hasMoved) {
+          const rect = homeBtnWrap.getBoundingClientRect();
+          homeBtnLeft = rect.left;
+          homeBtnTop = rect.top;
+        }
+      });
+
+      // Pointer cancel
+      homeBtnWrap.addEventListener('pointercancel', (e) => {
+        isDragging = false;
+        homeBtnWrap.classList.remove('dragging');
+      });
+
+      // Handle click on the link: if we moved, prevent navigation
+      homeBtn.addEventListener('click', (e) => {
+        if (hasMoved) {
+          e.preventDefault();
+          hasMoved = false;
+        }
+      });
+
+      // Also prevent default drag on the link itself
+      homeBtn.addEventListener('dragstart', (e) => e.preventDefault());
+
+      // ---- INIT ----
+      function init() {
+        bgMusic.volume = 0.4;
+
+        // Page dots click
+        pageDots.forEach(dot => {
+          dot.addEventListener('click', () => {
+            const pageNum = parseInt(dot.dataset.page);
+            if (pageNum !== currentPage) goToPage(pageNum);
+          });
+        });
+
+        // Open magazine
+        openMagazineBtn.addEventListener('click', () => {
+          goToPage(2);
+          bgMusic.play().catch(() => {});
+          playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        });
+
+        // Replay
+        replayBtn.addEventListener('click', () => goToPage(1));
+
+        // Next / Prev
+        nextBtn.addEventListener('click', () => {
+          if (currentPage < totalPages) goToPage(currentPage + 1);
+        });
+        prevBtn.addEventListener('click', () => {
+          if (currentPage > 1) goToPage(currentPage - 1);
+        });
+
+        // Interview toggle
+        document.querySelectorAll('.interview-question').forEach(q => {
+          q.addEventListener('click', () => {
+            const item = q.closest('.interview-item');
+            const answer = item.querySelector('.interview-answer');
+            const isOpen = answer.classList.contains('open');
+            document.querySelectorAll('.interview-answer').forEach(a => a.classList.remove('open'));
+            document.querySelectorAll('.interview-item').forEach(i => i.classList.remove('active'));
+            if (!isOpen) {
+              answer.classList.add('open');
+              item.classList.add('active');
+            }
+          });
+        });
+
+        // Future message
+        openYearBtn.addEventListener('click', () => {
+          futureMessage.classList.toggle('show');
+        });
+
+        // Secret page
+        secretSealBtn.addEventListener('click', () => {
+          secretPage.classList.add('open');
+        });
+        closeSecretBtn.addEventListener('click', () => {
+          secretPage.classList.remove('open');
+        });
+
+        // Bookmark
+        bookmarkBtn.addEventListener('click', () => {
+          localStorage.setItem('herEditionBookmark', currentPage);
+          bookmarkBtn.style.background = '#b8a99a';
+          bookmarkBtn.style.color = '#f2ede6';
+          setTimeout(() => {
+            bookmarkBtn.style.background = '#ede8e0';
+            bookmarkBtn.style.color = '#8a7a64';
+          }, 500);
+        });
+
+        // Music controls
+        playPauseBtn.addEventListener('click', () => {
+          if (bgMusic.paused) {
+            bgMusic.play().catch(() => {});
+            playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+          } else {
+            bgMusic.pause();
+            playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+          }
+        });
+
+        volumeSlider.addEventListener('input', (e) => {
+          bgMusic.volume = e.target.value / 100;
+        });
+
+        // Particles
+        createParticles();
+
+        // Keyboard navigation (only when lightbox is closed)
+        document.addEventListener('keydown', (e) => {
+          if (lightbox.classList.contains('open')) return;
+          if (e.key === 'ArrowRight' && currentPage < totalPages) goToPage(currentPage + 1);
+          if (e.key === 'ArrowLeft' && currentPage > 1) goToPage(currentPage - 1);
+        });
+      }
+
+      // ---- NAVIGATION ----
+      function goToPage(pageNum) {
+        if (pageNum === currentPage) return;
+        if (pageNum < 1 || pageNum > totalPages) return;
+
+        pages.forEach((page, idx) => {
+          const pageIndex = idx + 1;
+          if (pageIndex === pageNum) {
+            page.classList.add('active');
+            page.classList.remove('flipped-out');
+          } else {
+            page.classList.remove('active');
+            if (pageIndex < pageNum) {
+              page.classList.add('flipped-out');
+            } else {
+              page.classList.remove('flipped-out');
+            }
+          }
+        });
+
+        pageDots.forEach(dot => {
+          dot.classList.toggle('active', parseInt(dot.dataset.page) === pageNum);
+        });
+
+        prevBtn.disabled = pageNum === 1;
+        nextBtn.disabled = pageNum === totalPages;
+        currentPage = pageNum;
+
+        const activePage = document.querySelector('.page.active');
+        if (activePage) activePage.scrollTop = 0;
+      }
+
+      // ---- PARTICLES ----
+      function createParticles() {
+        const container = document.getElementById('particlesContainer');
+        if (!container) return;
+        for (let i = 0; i < 30; i++) {
+          const particle = document.createElement('div');
+          particle.classList.add('particle');
+          particle.style.left = Math.random() * 100 + '%';
+          particle.style.bottom = Math.random() * 100 + '%';
+          particle.style.animationDelay = Math.random() * 7 + 's';
+          particle.style.animationDuration = (5 + Math.random() * 5) + 's';
+          particle.style.width = (2 + Math.random() * 4) + 'px';
+          particle.style.height = particle.style.width;
+          container.appendChild(particle);
+        }
+      }
+
+      // ---- START ----
+      init();
+    })();
+  </script>
+</body>
+</html>
